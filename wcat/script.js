@@ -23,14 +23,50 @@ else if(processData[2]==='w'){
     fs.writeFileSync(processData[3],processData[4]);
 }
 else if(processData.includes('ns')){
-    let data=fs.readFileSync(processData[3],'utf-8');
-    let lines=data.split(" ");
-    if(lines.includes("\r"))
-      lines=data.split("\r\n");
-    let currentWord="";
-    for(let i=0;i<lines.length;i++)
-       currentWord+=lines[i];
-    console.log(currentWord);
+    let finalData="";
+    for(let i=3;i<processData.length;i++){
+        let data=fs.readFileSync(processData[i],'utf-8');
+        let arrData=data.split(" ");
+        arrData=arrData.join("");
+        // arrData=arrData.split("\n");
+        // arrData=arrData.join("");
+        if(arrData.includes("\r")){
+            arrData=arrData.split("\r");
+            arrData=arrData.join("");
+        }
+        finalData+=arrData;
+    }
+    
+    console.log(finalData);
+}
+// Code of num
+else if(processData.includes("num")){
+    let finalData="";
+    let num=1;
+    for(let i=3;i<processData.length;i++){
+        let data=fs.readFileSync(processData[i],'utf-8');
+        let lines=data.split("\n");
+        if(data.includes("\r\n")){
+            lines=data.split("\r\n");
+        }
+        for(let i=0;i<lines.length;i++){
+            if(lines[i]!=""){
+                console.log(num+"."+lines[i]);
+            }
+            else{
+                console.log(num+"."+"Empty line");
+            }
+            num+=1;
+        }
+    }
+}
+else if(processData.includes("--help")){
+    console.log("Type following command with wcat");
+    console.log("ns filename-> To print the data inside the file without any space");
+    console.log("ns filename-> To print the data inside the file without any new line");
+    console.log("w filename-> To write data inside the file");
+    // console.log("r filename-> Read file");
+    console.log("a filename-> Append the data inside the filename");
 }
 else{
     let data="";
@@ -43,7 +79,7 @@ else{
             }
             let tempData=fs.readFileSync(processData[i],"utf-8");
             let lines=tempData.split("\n");
-            // console.log(lines);
+          //  console.log(lines);
             if(tempData.includes("\r")){
                 lines=tempData.split("\r\n");
             }
